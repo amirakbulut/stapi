@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Country;
-use App\Http\Resources\Country as CountryResource;
+use App\Http\Resources\Countries;
 
 class CountryController extends Controller
 {
@@ -16,7 +16,7 @@ class CountryController extends Controller
     public function index()
     {
         $countries = Country::all();
-        return CountryResource::collection($countries);
+        return Countries::collection($countries);
     }
 
     /**
@@ -29,14 +29,14 @@ class CountryController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|unique:countries|max:100|min:5',
+            'name' => 'required|string|alpha|unique:countries|max:100|min:5',
         ]);
 
         $country = new Country;
         $country->name = $request->input('name');
 
         if($country->save()){
-            return new CountryResource($country);
+            return new Countries($country);
         }
     }
 
@@ -44,11 +44,11 @@ class CountryController extends Controller
      * Display the specified resource.
      *
      * @param  int $id
-     * @return CountryResource
+     * @return Countries
      */
     public function show($id)
     {
-        return new CountryResource(Country::findOrFail($id));
+        return new Countries(Country::findOrFail($id));
     }
 
     /**
@@ -56,15 +56,21 @@ class CountryController extends Controller
      *
      * @param  \Illuminate\Http\Request $request
      * @param  int $id
-     * @return CountryResource
+     * @return Countries
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function update(Request $request, $id)
     {
+
+        $this->validate($request, [
+            'name' => 'required|string|alpha|unique:countries|max:100|min:5',
+        ]);
+
         $country = Country::findOrFail($id);
-        $country->name = $request->input('country_name');
+        $country->name = $request->input('name');
 
         if($country->save()){
-            return new CountryResource($country);
+            return new Countries($country);
         }
     }
 
@@ -79,7 +85,7 @@ class CountryController extends Controller
         $country = Country::findOrFail($id);
 
         if($country->delete()){
-            return new CountryResource($country);
+            return new Countries($country);
         }
 
     }

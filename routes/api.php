@@ -17,4 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('countries', 'CountryController');
+Route::apiResources([
+    'countries' => 'CountryController',
+    'provinces' => 'ProvinceController'
+]);
