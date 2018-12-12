@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Country;
 use Illuminate\Http\Request;
 use App\Province;
 use App\Http\Resources\Provinces;
@@ -29,13 +30,19 @@ class ProvinceController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|string|alpha|unique:provinces|max:100|min:5',
+            'country_id' => 'required|numeric|unique:provinces,country_id',
         ]);
 
-        $province = new Province;
-        $province->name = $request->input('name');
+        $country_id = Country::findOrFail($request->input('country_id'));
 
-        if($province->save()){
-            return new Provinces($province);
+        if($country_id) {
+            $province = new Province;
+            $province->name = $request->input('name');
+            $province->country_id = $request->input('country_id');
+
+            if($province->save()){
+                return new Provinces($province);
+            }
         }
     }
 
