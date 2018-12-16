@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Country;
-use App\Http\Resources\Countries;
+use App\Http\Resources\CountryResource;
+use App\Http\Resources\CountryCollection;
+
 
 class CountryController extends Controller
 {
@@ -16,7 +18,7 @@ class CountryController extends Controller
     public function index()
     {
         $countries = Country::all();
-        return Countries::collection($countries);
+        return new CountryCollection($countries);
     }
 
     /**
@@ -36,7 +38,7 @@ class CountryController extends Controller
         $country->name = $request->input('name');
 
         if($country->save()){
-            return new Countries($country);
+            return new CountryResource($country);
         }
     }
 
@@ -44,11 +46,11 @@ class CountryController extends Controller
      * Display the specified resource.
      *
      * @param  int $id
-     * @return Countries
+     * @return Country
      */
     public function show($id)
     {
-        return new Countries(Country::findOrFail($id));
+        return new CountryResource(Country::findOrFail($id));
     }
 
     /**
@@ -56,7 +58,7 @@ class CountryController extends Controller
      *
      * @param  \Illuminate\Http\Request $request
      * @param  int $id
-     * @return Countries
+     * @return Country
      * @throws \Illuminate\Validation\ValidationException
      */
     public function update(Request $request, $id)
@@ -70,7 +72,7 @@ class CountryController extends Controller
         $country->name = $request->input('name');
 
         if($country->save()){
-            return new Countries($country);
+            return new CountryResource($country);
         }
     }
 
@@ -85,7 +87,7 @@ class CountryController extends Controller
         $country = Country::findOrFail($id);
 
         if($country->delete()){
-            return new Countries($country);
+            return new CountryResource($country);
         }
 
     }

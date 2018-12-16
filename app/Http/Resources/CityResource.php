@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Provinces extends JsonResource
+class CityResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,6 +17,7 @@ class Provinces extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'type' => 'Resource'
         ];
     }
 }
