@@ -31,7 +31,7 @@ class CountryController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|string|alpha|unique:countries|max:100|min:5',
+            'name' => 'required|string|unique:countries|max:100|min:5',
         ]);
 
         $country = new Country;
@@ -65,7 +65,7 @@ class CountryController extends Controller
     {
 
         $this->validate($request, [
-            'name' => 'required|string|alpha|unique:countries|max:100|min:5',
+            'name' => 'required|string|unique:countries|max:100|min:5',
         ]);
 
         $country = Country::findOrFail($id);

@@ -31,7 +31,7 @@ class ProvinceController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|string|alpha|unique:provinces,name,NULL,id,country_id,' . $request->input('country_id'),
+            'name' => 'required|string|unique:provinces,name,NULL,id,country_id,' . $request->input('country_id'),
             'country_id' => 'required|numeric|unique:provinces,country_id,NULL,id,name,' . $request->input('name'),
         ]);
 
@@ -70,7 +70,7 @@ class ProvinceController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name' => 'required|string|alpha|unique:provinces,name,NULL,id,country_id,' . $request->input('country_id'),
+            'name' => 'required|string|unique:provinces,name,NULL,id,country_id,' . $request->input('country_id'),
             'country_id' => 'required|numeric|unique:provinces,country_id,NULL,id,name,' . $request->input('name'),
         ]);
 

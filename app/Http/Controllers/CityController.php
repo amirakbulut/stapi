@@ -31,7 +31,7 @@ class CityController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|string|alpha|unique:cities,name,NULL,id,province_id,' . $request->input('province_id'),
+            'name' => 'required|string|unique:cities,name,NULL,id,province_id,' . $request->input('province_id'),
             'province_id' => 'required|numeric|unique:cities,province_id,NULL,id,name,' . $request->input('name'),
         ]);
 
@@ -71,18 +71,20 @@ class CityController extends Controller
     {
 
         $this->validate($request, [
-            'name' => 'required|string|alpha|unique:cities,name,NULL,id,province_id,' . $request->input('province_id'),
+            'name' => 'required|string|unique:cities,name,NULL,id,province_id,' . $request->input('province_id'),
             'province_id' => 'required|numeric|unique:cities,province_id,NULL,id,name,' . $request->input('name'),
         ]);
 
         $city = City::findOrFail($id);
         $province = Province::findOrFail($request->input('province_id'));
 
-        $city->name = $request->input('name');
-        $city->province_id = $request->input('province_id');
+        if($city && $province){
+            $city->name = $request->input('name');
+            $city->province_id = $request->input('province_id');
 
-        if($city->save()){
-            return new CityResource($city);
+            if($city->save()){
+                return new CityResource($city);
+            }
         }
     }
 
